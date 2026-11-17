@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use or reference aether-compiler in research or enterprise AI architecture, please cite it as below."
+type: software
+title: "AetherCompiler: MLIR/TorchInductor-Style Typed SSA Tensor Graph Compiler, C++20 Linear-Scan Static Arena Planner & Polyhedral H100 CuTe XOR Bank-Conflict Autotuner"
+version: 1.0.0
+date-released: "2026-11-17"
+license: Apache-2.0
+url: "https://nagarjunak-pixel.github.io/projects.html#aether-compiler"
+repository-code: "https://github.com/nagarjunak-pixel/aether-compiler"
+authors:
+  - family-names: "Kamireddy"
+    given-names: "Nagarjuna Reddy"
+    affiliation: "Suryagentic AI"

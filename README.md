@@ -4,9 +4,16 @@
 [![Python 3.13](https://img.shields.io/badge/python-3.13-3776AB.svg)](https://www.python.org/)
 [![C++20 Native](https://img.shields.io/badge/C%2B%2B20-Tiled%20GEMM%20%2B%20Arena-00599C.svg)](csrc/aether_kernels.cpp)
 [![Coverage 98.34%](https://img.shields.io/badge/coverage-98.34%25-10B981.svg)](tests/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-F59E0B.svg)](LICENSE)
+[![Release v1.0.0](https://img.shields.io/badge/release-v1.0.0-1f6feb.svg)](https://github.com/nagarjunak-pixel/aether-compiler/releases/tag/v1.0.0)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-10b981.svg)](LICENSE)
 
 **MLIR/TorchInductor-Style Typed SSA Tensor Graph Compiler, Algebraic/CSE/DCE & Vertical Epilogue Operator Fusion Pipeline, Native `C++20` Linear-Scan Static Activation Arena Planner (`432 MiB -> 120 MiB`, `3.60x`), Polyhedral NVIDIA H100 SXM5 Tile & `CuTe` `32 -> 1` Bank-Conflict Autotuner (`31.02x` Speedup), and Live Ollama (`qwen3.5:4b`) Hardware-Constraint CEGIS (`66.7% -> 100.0%`).**
+
+---
+
+## Live Typed SSA Fusion, C++20 Arena & H100 CuTe XOR Autotuner Workbench
+
+![AetherCompiler Live Workbench — Typed SSA Graph Fusion, C++20 Static Activation Arena & H100 CuTe Bank-Conflict Autotuner](docs/assets/workbench-preview.png)
 
 ---
 
