@@ -7,7 +7,7 @@ name = "aether-compiler"
 version = "1.0.0"
 description = "Small tensor-graph compiler: SSA IR with CSE/fusion/DCE passes, C++20 static arena planner, analytic H100 tile cost model. Educational reference implementation"
 readme = "README.md"
-license = { text = "MIT" }
+license = { text = "Apache-2.0" }
 requires-python = ">=3.12"
 authors = [
     { name = "Nagarjuna Kamireddy", email = "sendemailtonagarjuna@gmail.com" },

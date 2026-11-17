@@ -1,4 +1,4 @@
-name: AetherCompiler Deterministic CI
+name: AetherCompiler CI
 
 on:
   push:
