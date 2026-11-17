@@ -7,7 +7,9 @@
 [![Release v1.0.0](https://img.shields.io/badge/release-v1.0.0-1f6feb.svg)](https://github.com/nagarjunak-pixel/aether-compiler/releases/tag/v1.0.0)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-10b981.svg)](LICENSE)
 
-**MLIR/TorchInductor-Style Typed SSA Tensor Graph Compiler, Algebraic/CSE/DCE & Vertical Epilogue Operator Fusion Pipeline, Native `C++20` Linear-Scan Static Activation Arena Planner (`432 MiB -> 120 MiB`, `3.60x`), Polyhedral NVIDIA H100 SXM5 Tile & `CuTe` `32 -> 1` Bank-Conflict Autotuner (`31.02x` Speedup), and Live Ollama (`qwen3.5:4b`) Hardware-Constraint CEGIS (`66.7% -> 100.0%`).**
+**Small tensor-graph compiler: SSA IR with CSE/fusion/DCE passes, C++20 static arena planner, analytic H100 tile cost model. Educational reference implementation.**
+
+AetherCompiler is a compact, educational reimplementation of a few ideas from ML compilers. It builds a typed SSA tensor graph, runs algebraic simplification, CSE, single-use vertical epilogue fusion and DCE over it (`17 -> 9` nodes on the bundled example graph), plans static activation memory with a best-fit linear-scan arena planner written in C++20 with a Python fallback (`432 MiB -> 120 MiB` on a 2-layer Transformer example), and ranks `256` GEMM tile schedules with an analytic roofline-style H100 cost model (estimated, not measured on a GPU). A small harness also asks a local `qwen3.5:4b` model (via Ollama) six hand-written hardware-constraint questions and re-prompts it with validator feedback (raw `4/6` -> `6/6` after feedback).
 
 ---
 
@@ -58,6 +60,15 @@ Every metric below is deterministically reproducible via CLI (`aether ...`) and 
 | **CuTe Bank Swizzler** | Bijective `col ^ (row & 31)` 32-bank shared-memory layout | **`32-way` serialization -> `1-way` conflict-free (`0` padding)** | Exact 32-lane warp stride simulation in `csrc/aether_kernels.cpp` |
 | **Live `qwen3.5:4b` Gate** | 6 Hopper TMA, FlashAttn, `wgmma` alignment & arena tasks | **Raw `4/6` (`66.7%`) -> Verified `6/6` (`100.0%`, `+33.3%` lift)** | **`0` shared-memory OOMs or unaligned `wgmma` schedules** (`benchmarks/real_qwen_compiler.json`) |
 
+---
+
+## Scope & Limitations
+
+- **Scale:** ~1.6k lines of Python in `src/` plus a ~200-line C++20 helper (`csrc/aether_kernels.cpp`, compiled with `clang++`/`g++` via `ctypes`, with pure-Python/NumPy fallbacks). It is a reference implementation of the techniques, not a replacement for MLIR, XLA, TorchInductor or Triton.
+- **No GPU execution:** the H100 tile/stage/swizzle numbers (e.g. `411.65 TFLOP/s`, `31.02x`) are outputs of an analytic roofline model with hand-set stage and bank-conflict penalty factors over `256` enumerated schedules; no CUDA/PTX is generated and nothing is benchmarked on real hardware. The bank-conflict result is a 32-lane address simulation.
+- **Small, self-constructed workloads:** the IR and arena results come from built-in example graphs (a 17-node graph and a 2-layer Transformer activation schedule); the C++ kernel is a CPU cache-blocked FP32 `GEMM+Bias+SiLU` checked numerically against NumPy, not tuned for throughput.
+- **LLM evaluation is tiny:** the CEGIS-style loop uses `6` hand-written tasks with deterministic Python validators and a small local model (`qwen3.5:4b` via Ollama); `4/6 -> 6/6` reflects re-prompting with validator feedback on those 6 cases only and is not a general benchmark.
+- **Not production-hardened:** no real frontend (e.g. PyTorch/ONNX import), no code generation backend, and the API/UI are a local demo workbench.
 ---
 
 ## Quickstart
